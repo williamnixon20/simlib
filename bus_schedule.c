@@ -102,6 +102,10 @@ const double MIN_ONBOARD = 15 / 60.0; // 15 seconds
 const double MAX_ONBOARD = 25 / 60.0; // 25 seconds
 const double BUS_STAY = 5;          // 5 minutes
 
+/** Global variable*/
+int waiting_duration = 0;
+
+// Function declaration
 void init_model();
 void report();
 void sched_arrival(int);
@@ -204,6 +208,7 @@ void depart(int station) {
             break;
     }
 }
+
 void load(int station) {
     int current_station_queue = LIST_QUEUE_1 + (station - 1);
     int event_load = EVENT_LOADING_1 + (station - 1);
@@ -219,14 +224,28 @@ void load(int station) {
         int target_station_queue = LIST_QUEUE_BUS_ARRIVE_1 + (person_destination - 1);
         list_file(LAST, target_station_queue);
 
+        // Reset waiting variable
+        waiting_duration = 0;
+
         // Schedule next loading
         event_schedule(sim_time + uniform(MIN_ONBOARD, MAX_ONBOARD, STREAM_LOADING), event_load);
     } else {
-        printf("[%.1f] Bus finished loading, current capacity: %d\n", sim_time, get_bus_size());
-        // TODO: LEGIT WAITING MECHANISM
-        // If queue empty, schedule next arrival in the next 5 minutes
-        event_schedule(sim_time + BUS_STAY, EVENT_BUS_DEPARTURE_1 + (station - 1));
-    }
+        printf("[%.1f] Bus still waiting at minute {%d}, current capacity: %d\n", sim_time, waiting_duration, get_bus_size());
+        
+        // Leave if already wait for too long or already full
+        if (waiting_duration >= BUS_STAY || get_bus_size() == MAX_CAPACITY) {
+            printf("[%.1f] Bus finished loading, current capacity: %d\n", sim_time, get_bus_size());
+            event_schedule(sim_time, EVENT_BUS_DEPARTURE_1 + (station - 1));
+            // Reset waiting to 0
+            waiting_duration = 0;
+        }
+        else
+        {
+            // Requeue loading for the next minute
+            waiting_duration += 1;
+            event_schedule(sim_time + 1, event_load);
+        }
+    }   
 }
 
 void unload(int station)
