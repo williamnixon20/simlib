@@ -33,16 +33,20 @@
 #define TIMEST_MAXIMUM 2
 #define TIMEST_MINIMUM 3
 
-#define SAMPST_DELAYS_1 1 /* sampst variable for delays in queue at location 1. */
-#define SAMPST_DELAYS_2 2 /* sampst variable for delays in queue at location 2. */
-#define SAMPST_DELAYS_3 3 /* sampst variable for delays in queue at location 3. */
-#define SAMPST_SERVER_1 4 /* sampst variable for server delays at location 1. */
-#define SAMPST_SERVER_2 5 /* sampst variable for server delays at location 2. */
-#define SAMPST_SERVER_3 6 /* sampst variable for server delays at location 3. */
-#define SAMPST_LOOP_1 7   /* sampst variable for loop delays at location 1. */
-#define SAMPST_LOOP_2 8   /* sampst variable for loop delays at location 2. */
-#define SAMPST_LOOP_3 9   /* sampst variable for loop delays at location 3. */
-#define SAMPST_PERSON 10  /* sampst variable for person delay. */
+#define SAMPST_PEOPLE_1 1    /* sampst variable for number in queue at location 1. */
+#define SAMPST_PEOPLE_2 2    /* sampst variable for number in queue at location 2. */
+#define SAMPST_PEOPLE_3 3    /* sampst variable for number in queue at location 3. */
+#define SAMPST_DELAYS_1 4    /* sampst variable for delays in queue at location 1. */
+#define SAMPST_DELAYS_2 5    /* sampst variable for delays in queue at location 2. */
+#define SAMPST_DELAYS_3 6    /* sampst variable for delays in queue at location 3. */
+#define SAMPST_PEOPLE_BUS 7  /* sampst variable for number on the bus*/
+#define SAMPST_STOPTIME_1 8  /* sampst variable for how much time bus stopped at location 1. */
+#define SAMPST_STOPTIME_2 9  /* sampst variable for how much time bus stopped at location 1. */
+#define SAMPST_STOPTIME_3 10 /* sampst variable for how much time bus stopped at location 1. */
+#define SAMPST_LOOP 11       /* sampst variable for bus loop time. */
+#define SAMPST_PERSON_1 12   /* sampst variable for person time in the system arrived at location 1. */
+#define SAMPST_PERSON_2 13   /* sampst variable for person time in the system arrived at location 2. */
+#define SAMPST_PERSON_3 14   /* sampst variable for person time in the system arrived at location 3. */
 
 #define STREAM_INTERARRIVAL_1 1 /* Random-number stream for interarrivals at location 1. */
 #define STREAM_INTERARRIVAL_2 2 /* Random-number stream for interarrivals at location 2. */
@@ -161,19 +165,23 @@ void load(int station)
         // Reset waiting variable
         waiting_duration = 0;
 
-        printf("[%.1f] [LOAD] Bus load person at station {%d}, current occupancy: %d, people at station {%d}: %d\n", sim_time, station, get_bus_size(), station, list_size[LIST_QUEUE_1 + (station - 1)]);
+        // Update sampst variable
+        sampst(list_size[LIST_QUEUE_1 + (station - 1)], (SAMPST_PEOPLE_1 + (station - 1)));
+
+        printf("[%.1f] [LOAD]      Bus load person at station {%d}, current occupancy: %d, people at station {%d}: %d\n", sim_time, station, get_bus_size(), station, list_size[LIST_QUEUE_1 + (station - 1)]);
         fprintf(logfile, "[%.1f] [LOAD] Bus load person at station {%d}, current occupancy: %d, people at station {%d}: %d\n", sim_time, station, get_bus_size(), station, list_size[LIST_QUEUE_1 + (station - 1)]);
         // Schedule next loading
         event_schedule(sim_time + uniform(MIN_ONBOARD, MAX_ONBOARD, STREAM_LOADING), event_load);
     }
     else
     {
-        printf("[%.1f] [WAIT] Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
-        fprintf(logfile, "[%.1f] [WAIT] Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
 
         // Leave if already wait for too long or already full
         if (waiting_duration >= BUS_STAY || get_bus_size() == MAX_CAPACITY)
         {
+            // Update sampst variable
+            sampst(get_bus_size(), SAMPST_PEOPLE_BUS);
+
             printf("[%.1f] Bus finished loading, current occupancy: %d\n", sim_time, get_bus_size());
             fprintf(logfile, "[%.1f] Bus finished loading, current occupancy: %d\n", sim_time, get_bus_size());
             event_schedule(sim_time, EVENT_BUS_DEPARTURE_1 + (station - 1));
@@ -182,6 +190,8 @@ void load(int station)
         }
         else
         {
+            printf("[%.1f] [WAIT]      Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
+            fprintf(logfile, "[%.1f] [WAIT] Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
             // Requeue loading for the next minute
             waiting_duration += 1;
             event_schedule(sim_time + 1, event_load);
@@ -205,7 +215,7 @@ void unload(int station)
     else
     {
         list_remove(FIRST, customer_destination_queue);
-        printf("[%.1f] [OFFLOAD] Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
+        printf("[%.1f] [OFFLOAD]   Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
         fprintf(logfile, "[%.1f] [OFFLOAD] Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
         // Queue next person to remove
         bus_arrival(station);
@@ -227,6 +237,9 @@ void bus_arrival(int station)
     }
     else
     {
+        // Update sampst variable
+        sampst(get_bus_size(), SAMPST_PEOPLE_BUS);
+
         printf("[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
         fprintf(logfile, "[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
         // Onboard now
@@ -249,23 +262,23 @@ void sched_arrival(int station)
     {
     case 1:
         list_file(LAST, LIST_QUEUE_1);
-        sampst(1, 1);
-        printf("[%.1f] [ARRIVAL] New person arrived at station 1, People at station 1: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        sampst(list_size[LIST_QUEUE_1 + (station - 1)], SAMPST_PEOPLE_1);
+        printf("[%.1f] [ARRIVAL]   New person arrived at station 1, People at station 1: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 1, People at station 1: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_1, STREAM_INTERARRIVAL_1), EVENT_ARRIVAL_1);
         break;
     case 2:
         list_file(LAST, LIST_QUEUE_2);
         // printf("New person arrived at station 2\n");
-        sampst(1, 2);
-        printf("[%.1f] [ARRIVAL] New person arrived at station 2, People at station 2: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        sampst(list_size[LIST_QUEUE_1 + (station - 1)], SAMPST_PEOPLE_2);
+        printf("[%.1f] [ARRIVAL]   New person arrived at station 2, People at station 2: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 2, People at station 2: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_2, STREAM_INTERARRIVAL_2), EVENT_ARRIVAL_2);
         break;
     case 3:
         list_file(LAST, LIST_QUEUE_3);
-        sampst(1, 3);
-        printf("[%.1f] [ARRIVAL] New person arrived at station 3, People at station 3: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        sampst(list_size[LIST_QUEUE_1 + (station - 1)], SAMPST_PEOPLE_3);
+        printf("[%.1f] [ARRIVAL]   New person arrived at station 3, People at station 3: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 3, People at station 3: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         // printf("New person arrived at station 3\n");
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_3, STREAM_INTERARRIVAL_3), EVENT_ARRIVAL_3);
@@ -294,6 +307,12 @@ void init_model()
     // Schedule station 3 arrival
     event_schedule(expon(AVG_ARRIVAL_TIME_STATION_3, STREAM_INTERARRIVAL_3), EVENT_ARRIVAL_3);
 
+    // Initialize empty element on sampst variable
+    sampst(0, SAMPST_PEOPLE_1);
+    sampst(0, SAMPST_PEOPLE_2);
+    sampst(0, SAMPST_PEOPLE_3);
+    sampst(0, SAMPST_PEOPLE_BUS);
+
     // Schedule bus departure at station 3
     event_schedule(0, EVENT_BUS_DEPARTURE_3);
 }
@@ -304,11 +323,11 @@ void report()
     // TODO: LEGIT REPORT
     fprintf(outfile, "Report for %.1lf hour simulation\n\n", MAX_TIME / 60.0);
     sampst(0, -1);
-    printf("\nNumber of person on station 1: %14.2lf", transfer[SAMPST_NUMBER]);
-    sampst(0, -2);
-    printf("\nNumber of person on station 2: %14.2lf", transfer[SAMPST_NUMBER]);
-    sampst(0, -3);
-    printf("\nNumber of person on station 3: %14.2lf", transfer[SAMPST_NUMBER]);
+    // printf("\nNumber of person on station 1: %14.2lf", transfer[SAMPST_NUMBER]);
+    // sampst(0, -2);
+    // printf("\nNumber of person on station 2: %14.2lf", transfer[SAMPST_NUMBER]);
+    // sampst(0, -3);
+    // printf("\nNumber of person on station 3: %14.2lf \n", transfer[SAMPST_NUMBER]);
     // Number 1
     fprintf(outfile, "\n\n\n\nStatistics 1: Average and maximum number in each queue\n\n");
     // Number 2
@@ -336,7 +355,7 @@ int main()
     MAX_TIME *= 60.0;
 
     init_simlib();
-    maxatr = 10;
+    maxatr = 14;
 
     /* Initialize the model. */
     init_model();
@@ -404,5 +423,19 @@ int main()
     report();
     fclose(logfile);
     fclose(outfile);
+    sampst(0, -SAMPST_PEOPLE_1);
+    printf("mean number queue 1: %f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 1: %f\n", transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_PEOPLE_2);
+    printf("mean number queue 2: %f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 2: %f\n", transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_PEOPLE_3);
+    printf("mean number queue 3: %f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 3: %f\n", transfer[SAMPST_MAXIMUM]);
+    printf("=============\n");
+    sampst(0, -SAMPST_PEOPLE_BUS);
+    printf("mean number on the bus: %f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number on the bus: %f\n", transfer[SAMPST_MAXIMUM]);
+
     return 0;
 }

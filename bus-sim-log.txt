@@ -39,7 +39,6 @@ Log for 1.0 hour simulation
 [22.1] [ARRIVAL] New person arrived at station 3, People at station 3: 9
 [22.5] [WAIT] Bus still waiting at minute {4}, current occupancy: 6
 [23.0] [ARRIVAL] New person arrived at station 3, People at station 3: 10
-[23.5] [WAIT] Bus still waiting at minute {5}, current occupancy: 6
 [23.5] Bus finished loading, current occupancy: 6
 [23.5] [DEPARTURE] Bus departing from station 1 to station 2, bus occupancy: 6 
 [24.0] [ARRIVAL] New person arrived at station 2, People at station 2: 4
@@ -62,7 +61,6 @@ Log for 1.0 hour simulation
 [30.1] [WAIT] Bus still waiting at minute {3}, current occupancy: 10
 [31.1] [WAIT] Bus still waiting at minute {4}, current occupancy: 10
 [31.6] [ARRIVAL] New person arrived at station 3, People at station 3: 16
-[32.1] [WAIT] Bus still waiting at minute {5}, current occupancy: 10
 [32.1] Bus finished loading, current occupancy: 10
 [32.1] [DEPARTURE] Bus departing from station 2 to station 3, bus occupancy: 10 
 [32.2] [ARRIVAL] New person arrived at station 1, People at station 1: 4
@@ -124,7 +122,6 @@ Log for 1.0 hour simulation
 [50.7] [LOAD] Bus load person at station {3}, current occupancy: 19, people at station {3}: 10
 [51.1] [LOAD] Bus load person at station {3}, current occupancy: 20, people at station {3}: 9
 [51.1] [ARRIVAL] New person arrived at station 1, People at station 1: 13
-[51.4] [WAIT] Bus still waiting at minute {0}, current occupancy: 20
 [51.4] Bus finished loading, current occupancy: 20
 [51.4] [DEPARTURE] Bus departing from station 3 to station 1, bus occupancy: 20 
 [52.7] [ARRIVAL] New person arrived at station 1, People at station 1: 14
