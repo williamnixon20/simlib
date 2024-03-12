@@ -83,6 +83,7 @@
 //  6, determining destination of an arrival at the car rental
 /* Declare non-simlib global variables. */
 FILE *outfile;
+FILE *logfile;
 
 /* Declare Constant Variables */
 const float AVG_ARRIVAL_TIME_STATION_1 = 1.0 / (14.0 / 60); // 1/avg per minute
@@ -125,6 +126,7 @@ void depart(int station)
 {
     // 3 -> 1 -> 2 -> 3
     printf("[%.1f] [DEPARTURE] Bus departing from station %d to station %d, bus occupancy: %d \n", sim_time, station, station % 3 + 1, get_bus_size());
+    fprintf(logfile, "[%.1f] [DEPARTURE] Bus departing from station %d to station %d, bus occupancy: %d \n", sim_time, station, station % 3 + 1, get_bus_size());
     switch (station)
     {
     case 3:
@@ -160,17 +162,20 @@ void load(int station)
         waiting_duration = 0;
 
         printf("[%.1f] [LOAD] Bus load person at station {%d}, current occupancy: %d, people at station {%d}: %d\n", sim_time, station, get_bus_size(), station, list_size[LIST_QUEUE_1 + (station - 1)]);
+        fprintf(logfile, "[%.1f] [LOAD] Bus load person at station {%d}, current occupancy: %d, people at station {%d}: %d\n", sim_time, station, get_bus_size(), station, list_size[LIST_QUEUE_1 + (station - 1)]);
         // Schedule next loading
         event_schedule(sim_time + uniform(MIN_ONBOARD, MAX_ONBOARD, STREAM_LOADING), event_load);
     }
     else
     {
         printf("[%.1f] [WAIT] Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
+        fprintf(logfile, "[%.1f] [WAIT] Bus still waiting at minute {%d}, current occupancy: %d\n", sim_time, waiting_duration, get_bus_size());
 
         // Leave if already wait for too long or already full
         if (waiting_duration >= BUS_STAY || get_bus_size() == MAX_CAPACITY)
         {
             printf("[%.1f] Bus finished loading, current occupancy: %d\n", sim_time, get_bus_size());
+            fprintf(logfile, "[%.1f] Bus finished loading, current occupancy: %d\n", sim_time, get_bus_size());
             event_schedule(sim_time, EVENT_BUS_DEPARTURE_1 + (station - 1));
             // Reset waiting to 0
             waiting_duration = 0;
@@ -194,12 +199,14 @@ void unload(int station)
     if (list_size[customer_destination_queue] == 0)
     {
         printf("ERROR while unloading! Queue already empty");
+        fprintf(logfile, "ERROR while unloading! Queue already empty");
         exit(1);
     }
     else
     {
         list_remove(FIRST, customer_destination_queue);
         printf("[%.1f] [OFFLOAD] Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
+        fprintf(logfile, "[%.1f] [OFFLOAD] Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
         // Queue next person to remove
         bus_arrival(station);
     }
@@ -221,6 +228,7 @@ void bus_arrival(int station)
     else
     {
         printf("[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
+        fprintf(logfile, "[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
         // Onboard now
         event_schedule(sim_time + uniform(MIN_ONBOARD, MAX_ONBOARD, STREAM_LOADING), event_loading);
     }
@@ -243,6 +251,7 @@ void sched_arrival(int station)
         list_file(LAST, LIST_QUEUE_1);
         sampst(1, 1);
         printf("[%.1f] [ARRIVAL] New person arrived at station 1, People at station 1: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 1, People at station 1: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_1, STREAM_INTERARRIVAL_1), EVENT_ARRIVAL_1);
         break;
     case 2:
@@ -250,12 +259,14 @@ void sched_arrival(int station)
         // printf("New person arrived at station 2\n");
         sampst(1, 2);
         printf("[%.1f] [ARRIVAL] New person arrived at station 2, People at station 2: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 2, People at station 2: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_2, STREAM_INTERARRIVAL_2), EVENT_ARRIVAL_2);
         break;
     case 3:
         list_file(LAST, LIST_QUEUE_3);
         sampst(1, 3);
         printf("[%.1f] [ARRIVAL] New person arrived at station 3, People at station 3: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
+        fprintf(logfile, "[%.1f] [ARRIVAL] New person arrived at station 3, People at station 3: %d\n", sim_time, list_size[LIST_QUEUE_1 + (station - 1)]);
         // printf("New person arrived at station 3\n");
         event_schedule(sim_time + expon(AVG_ARRIVAL_TIME_STATION_3, STREAM_INTERARRIVAL_3), EVENT_ARRIVAL_3);
         break;
@@ -291,7 +302,7 @@ void init_model()
 void report()
 {
     // TODO: LEGIT REPORT
-    fprintf(outfile, "\n\n\n\nReport for %.1lf hour simulation\n\n", MAX_TIME / 60.0);
+    fprintf(outfile, "Report for %.1lf hour simulation\n\n", MAX_TIME / 60.0);
     sampst(0, -1);
     printf("\nNumber of person on station 1: %14.2lf", transfer[SAMPST_NUMBER]);
     sampst(0, -2);
@@ -317,6 +328,7 @@ void report()
 int main()
 {
     outfile = fopen("bus-sim-report.txt", "w");
+    logfile = fopen("bus-sim-log.txt", "w");
 
     // Get the simulation duration
     printf("Input the simulation duration (in hour): ");
@@ -328,7 +340,7 @@ int main()
 
     /* Initialize the model. */
     init_model();
-
+    fprintf(logfile, "Log for %.1lf hour simulation\n\n", MAX_TIME / 60.0);
     do
     {
         /* Determine the next event. */
@@ -390,6 +402,7 @@ int main()
 
     /* Invoke the report generator and end the simulation. */
     report();
+    fclose(logfile);
     fclose(outfile);
     return 0;
 }
