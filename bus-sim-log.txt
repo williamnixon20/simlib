@@ -1,4 +1,4 @@
-Log for 1.0 hour simulation
+Log for 2.0 hour simulation
 
 [0.0] [DEPARTURE] Bus departing from station 3 to station 1, bus occupancy: 0 
 [1.3] [ARRIVAL] New person arrived at station 3, People at station 3: 1
@@ -132,3 +132,165 @@ Log for 1.0 hour simulation
 [58.1] [ARRIVAL] New person arrived at station 1, People at station 1: 15
 [58.1] [ARRIVAL] New person arrived at station 3, People at station 3: 12
 [58.9] [ARRIVAL] New person arrived at station 3, People at station 3: 13
+[60.7] [OFFLOAD] Bus offload person at station {1}, current occupancy: 19
+[61.0] [OFFLOAD] Bus offload person at station {1}, current occupancy: 18
+[61.3] [OFFLOAD] Bus offload person at station {1}, current occupancy: 17
+[61.6] [OFFLOAD] Bus offload person at station {1}, current occupancy: 16
+[61.9] [OFFLOAD] Bus offload person at station {1}, current occupancy: 15
+[62.3] [OFFLOAD] Bus offload person at station {1}, current occupancy: 14
+[62.6] [OFFLOAD] Bus offload person at station {1}, current occupancy: 13
+[62.9] [OFFLOAD] Bus offload person at station {1}, current occupancy: 12
+[63.2] [OFFLOAD] Bus offload person at station {1}, current occupancy: 11
+[63.5] [OFFLOAD] Bus offload person at station {1}, current occupancy: 10
+[63.5] Bus finished offloading, current occupancy: 10
+[63.8] [LOAD] Bus load person at station {1}, current occupancy: 11, people at station {1}: 14
+[64.1] [LOAD] Bus load person at station {1}, current occupancy: 12, people at station {1}: 13
+[64.3] [LOAD] Bus load person at station {1}, current occupancy: 13, people at station {1}: 12
+[64.7] [LOAD] Bus load person at station {1}, current occupancy: 14, people at station {1}: 11
+[65.1] [LOAD] Bus load person at station {1}, current occupancy: 15, people at station {1}: 10
+[65.4] [LOAD] Bus load person at station {1}, current occupancy: 16, people at station {1}: 9
+[65.7] [LOAD] Bus load person at station {1}, current occupancy: 17, people at station {1}: 8
+[66.0] [LOAD] Bus load person at station {1}, current occupancy: 18, people at station {1}: 7
+[66.3] [LOAD] Bus load person at station {1}, current occupancy: 19, people at station {1}: 6
+[66.4] [ARRIVAL] New person arrived at station 1, People at station 1: 7
+[66.5] [LOAD] Bus load person at station {1}, current occupancy: 20, people at station {1}: 6
+[66.8] Bus finished loading, current occupancy: 20
+[66.8] [DEPARTURE] Bus departing from station 1 to station 2, bus occupancy: 20 
+[66.9] [ARRIVAL] New person arrived at station 3, People at station 3: 14
+[67.6] [ARRIVAL] New person arrived at station 1, People at station 1: 7
+[68.0] [ARRIVAL] New person arrived at station 3, People at station 3: 15
+[68.2] [ARRIVAL] New person arrived at station 2, People at station 2: 8
+[68.6] [ARRIVAL] New person arrived at station 3, People at station 3: 16
+[69.2] [OFFLOAD] Bus offload person at station {2}, current occupancy: 19
+[69.5] [ARRIVAL] New person arrived at station 3, People at station 3: 17
+[69.5] [OFFLOAD] Bus offload person at station {2}, current occupancy: 18
+[69.8] [OFFLOAD] Bus offload person at station {2}, current occupancy: 17
+[70.2] [OFFLOAD] Bus offload person at station {2}, current occupancy: 16
+[70.4] [ARRIVAL] New person arrived at station 3, People at station 3: 18
+[70.6] [OFFLOAD] Bus offload person at station {2}, current occupancy: 15
+[70.9] [OFFLOAD] Bus offload person at station {2}, current occupancy: 14
+[71.2] [OFFLOAD] Bus offload person at station {2}, current occupancy: 13
+[71.5] [OFFLOAD] Bus offload person at station {2}, current occupancy: 12
+[71.8] [OFFLOAD] Bus offload person at station {2}, current occupancy: 11
+[72.0] [ARRIVAL] New person arrived at station 3, People at station 3: 19
+[72.2] [OFFLOAD] Bus offload person at station {2}, current occupancy: 10
+[72.2] Bus finished offloading, current occupancy: 10
+[72.5] [LOAD] Bus load person at station {2}, current occupancy: 11, people at station {2}: 7
+[72.9] [LOAD] Bus load person at station {2}, current occupancy: 12, people at station {2}: 6
+[73.2] [LOAD] Bus load person at station {2}, current occupancy: 13, people at station {2}: 5
+[73.5] [LOAD] Bus load person at station {2}, current occupancy: 14, people at station {2}: 4
+[73.9] [LOAD] Bus load person at station {2}, current occupancy: 15, people at station {2}: 3
+[74.2] [LOAD] Bus load person at station {2}, current occupancy: 16, people at station {2}: 2
+[74.5] [LOAD] Bus load person at station {2}, current occupancy: 17, people at station {2}: 1
+[74.6] [ARRIVAL] New person arrived at station 1, People at station 1: 8
+[74.6] [ARRIVAL] New person arrived at station 3, People at station 3: 20
+[74.9] [LOAD] Bus load person at station {2}, current occupancy: 18, people at station {2}: 0
+[74.9] [ARRIVAL] New person arrived at station 3, People at station 3: 21
+[75.2] [WAIT] Bus still waiting at minute {0}, current occupancy: 18
+[76.0] [ARRIVAL] New person arrived at station 2, People at station 2: 1
+[76.2] [LOAD] Bus load person at station {2}, current occupancy: 19, people at station {2}: 0
+[76.5] [WAIT] Bus still waiting at minute {0}, current occupancy: 19
+[76.9] [ARRIVAL] New person arrived at station 2, People at station 2: 1
+[77.5] [LOAD] Bus load person at station {2}, current occupancy: 20, people at station {2}: 0
+[77.8] Bus finished loading, current occupancy: 20
+[77.8] [DEPARTURE] Bus departing from station 2 to station 3, bus occupancy: 20 
+[78.3] [ARRIVAL] New person arrived at station 1, People at station 1: 9
+[79.5] [ARRIVAL] New person arrived at station 3, People at station 3: 22
+[84.8] [ARRIVAL] New person arrived at station 2, People at station 2: 1
+[84.8] [ARRIVAL] New person arrived at station 3, People at station 3: 23
+[86.0] [ARRIVAL] New person arrived at station 2, People at station 2: 2
+[86.2] [ARRIVAL] New person arrived at station 2, People at station 2: 3
+[87.2] [OFFLOAD] Bus offload person at station {3}, current occupancy: 19
+[87.3] [ARRIVAL] New person arrived at station 3, People at station 3: 24
+[87.5] [OFFLOAD] Bus offload person at station {3}, current occupancy: 18
+[87.8] [OFFLOAD] Bus offload person at station {3}, current occupancy: 17
+[88.2] [OFFLOAD] Bus offload person at station {3}, current occupancy: 16
+[88.5] [OFFLOAD] Bus offload person at station {3}, current occupancy: 15
+[88.8] [OFFLOAD] Bus offload person at station {3}, current occupancy: 14
+[89.2] [OFFLOAD] Bus offload person at station {3}, current occupancy: 13
+[89.6] [OFFLOAD] Bus offload person at station {3}, current occupancy: 12
+[89.9] [OFFLOAD] Bus offload person at station {3}, current occupancy: 11
+[90.2] [OFFLOAD] Bus offload person at station {3}, current occupancy: 10
+[90.5] [OFFLOAD] Bus offload person at station {3}, current occupancy: 9
+[90.8] [OFFLOAD] Bus offload person at station {3}, current occupancy: 8
+[91.2] [OFFLOAD] Bus offload person at station {3}, current occupancy: 7
+[91.3] [ARRIVAL] New person arrived at station 3, People at station 3: 25
+[91.5] [OFFLOAD] Bus offload person at station {3}, current occupancy: 6
+[91.8] [OFFLOAD] Bus offload person at station {3}, current occupancy: 5
+[92.1] [OFFLOAD] Bus offload person at station {3}, current occupancy: 4
+[92.4] [OFFLOAD] Bus offload person at station {3}, current occupancy: 3
+[92.7] [OFFLOAD] Bus offload person at station {3}, current occupancy: 2
+[93.0] [OFFLOAD] Bus offload person at station {3}, current occupancy: 1
+[93.3] [ARRIVAL] New person arrived at station 2, People at station 2: 4
+[93.4] [OFFLOAD] Bus offload person at station {3}, current occupancy: 0
+[93.4] Bus finished offloading, current occupancy: 0
+[93.7] [LOAD] Bus load person at station {3}, current occupancy: 1, people at station {3}: 24
+[94.1] [LOAD] Bus load person at station {3}, current occupancy: 2, people at station {3}: 23
+[94.3] [LOAD] Bus load person at station {3}, current occupancy: 3, people at station {3}: 22
+[94.4] [ARRIVAL] New person arrived at station 1, People at station 1: 10
+[94.7] [LOAD] Bus load person at station {3}, current occupancy: 4, people at station {3}: 21
+[94.9] [LOAD] Bus load person at station {3}, current occupancy: 5, people at station {3}: 20
+[95.2] [LOAD] Bus load person at station {3}, current occupancy: 6, people at station {3}: 19
+[95.5] [LOAD] Bus load person at station {3}, current occupancy: 7, people at station {3}: 18
+[95.8] [LOAD] Bus load person at station {3}, current occupancy: 8, people at station {3}: 17
+[96.2] [LOAD] Bus load person at station {3}, current occupancy: 9, people at station {3}: 16
+[96.5] [LOAD] Bus load person at station {3}, current occupancy: 10, people at station {3}: 15
+[96.7] [ARRIVAL] New person arrived at station 3, People at station 3: 16
+[96.7] [ARRIVAL] New person arrived at station 1, People at station 1: 11
+[96.8] [LOAD] Bus load person at station {3}, current occupancy: 11, people at station {3}: 15
+[96.9] [ARRIVAL] New person arrived at station 3, People at station 3: 16
+[97.1] [LOAD] Bus load person at station {3}, current occupancy: 12, people at station {3}: 15
+[97.4] [LOAD] Bus load person at station {3}, current occupancy: 13, people at station {3}: 14
+[97.7] [LOAD] Bus load person at station {3}, current occupancy: 14, people at station {3}: 13
+[97.9] [ARRIVAL] New person arrived at station 3, People at station 3: 14
+[98.0] [LOAD] Bus load person at station {3}, current occupancy: 15, people at station {3}: 13
+[98.3] [LOAD] Bus load person at station {3}, current occupancy: 16, people at station {3}: 12
+[98.6] [LOAD] Bus load person at station {3}, current occupancy: 17, people at station {3}: 11
+[98.9] [LOAD] Bus load person at station {3}, current occupancy: 18, people at station {3}: 10
+[99.3] [LOAD] Bus load person at station {3}, current occupancy: 19, people at station {3}: 9
+[99.6] [LOAD] Bus load person at station {3}, current occupancy: 20, people at station {3}: 8
+[99.6] [ARRIVAL] New person arrived at station 3, People at station 3: 9
+[99.8] [ARRIVAL] New person arrived at station 3, People at station 3: 10
+[100.0] Bus finished loading, current occupancy: 20
+[100.0] [DEPARTURE] Bus departing from station 3 to station 1, bus occupancy: 20 
+[102.3] [ARRIVAL] New person arrived at station 3, People at station 3: 11
+[102.4] [ARRIVAL] New person arrived at station 3, People at station 3: 12
+[103.6] [ARRIVAL] New person arrived at station 3, People at station 3: 13
+[105.4] [ARRIVAL] New person arrived at station 2, People at station 2: 5
+[109.3] [OFFLOAD] Bus offload person at station {1}, current occupancy: 19
+[109.6] [OFFLOAD] Bus offload person at station {1}, current occupancy: 18
+[109.9] [OFFLOAD] Bus offload person at station {1}, current occupancy: 17
+[110.3] [OFFLOAD] Bus offload person at station {1}, current occupancy: 16
+[110.6] [OFFLOAD] Bus offload person at station {1}, current occupancy: 15
+[110.6] [ARRIVAL] New person arrived at station 3, People at station 3: 14
+[110.7] [ARRIVAL] New person arrived at station 3, People at station 3: 15
+[110.9] [OFFLOAD] Bus offload person at station {1}, current occupancy: 14
+[111.0] [ARRIVAL] New person arrived at station 1, People at station 1: 12
+[111.2] [OFFLOAD] Bus offload person at station {1}, current occupancy: 13
+[111.5] [OFFLOAD] Bus offload person at station {1}, current occupancy: 12
+[111.9] [OFFLOAD] Bus offload person at station {1}, current occupancy: 11
+[112.3] [OFFLOAD] Bus offload person at station {1}, current occupancy: 10
+[112.3] Bus finished offloading, current occupancy: 10
+[112.6] [LOAD] Bus load person at station {1}, current occupancy: 11, people at station {1}: 11
+[113.1] [LOAD] Bus load person at station {1}, current occupancy: 12, people at station {1}: 10
+[113.4] [ARRIVAL] New person arrived at station 3, People at station 3: 16
+[113.4] [LOAD] Bus load person at station {1}, current occupancy: 13, people at station {1}: 9
+[113.8] [LOAD] Bus load person at station {1}, current occupancy: 14, people at station {1}: 8
+[114.1] [LOAD] Bus load person at station {1}, current occupancy: 15, people at station {1}: 7
+[114.4] [LOAD] Bus load person at station {1}, current occupancy: 16, people at station {1}: 6
+[114.7] [LOAD] Bus load person at station {1}, current occupancy: 17, people at station {1}: 5
+[115.1] [LOAD] Bus load person at station {1}, current occupancy: 18, people at station {1}: 4
+[115.3] [LOAD] Bus load person at station {1}, current occupancy: 19, people at station {1}: 3
+[115.7] [LOAD] Bus load person at station {1}, current occupancy: 20, people at station {1}: 2
+[116.0] Bus finished loading, current occupancy: 20
+[116.0] [DEPARTURE] Bus departing from station 1 to station 2, bus occupancy: 20 
+[116.6] [ARRIVAL] New person arrived at station 1, People at station 1: 3
+[117.2] [ARRIVAL] New person arrived at station 3, People at station 3: 17
+[117.7] [ARRIVAL] New person arrived at station 2, People at station 2: 6
+[118.4] [OFFLOAD] Bus offload person at station {2}, current occupancy: 19
+[118.7] [OFFLOAD] Bus offload person at station {2}, current occupancy: 18
+[119.1] [OFFLOAD] Bus offload person at station {2}, current occupancy: 17
+[119.2] [ARRIVAL] New person arrived at station 2, People at station 2: 7
+[119.3] [ARRIVAL] New person arrived at station 3, People at station 3: 18
+[119.5] [OFFLOAD] Bus offload person at station {2}, current occupancy: 16
+[119.8] [OFFLOAD] Bus offload person at station {2}, current occupancy: 15

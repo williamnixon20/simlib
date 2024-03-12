@@ -110,6 +110,10 @@ const double BUS_STAY = 5;            // 5 minutes
 
 /** Global variable*/
 int waiting_duration = 0;
+double start_time_loop = 0;
+double start_time_location[3] = {0, 0, 0};
+char started = 0;
+char new_stop[3] = {1, 1, 1};
 
 // Function declaration
 void init_model();
@@ -129,6 +133,36 @@ int get_bus_size()
 void depart(int station)
 {
     // 3 -> 1 -> 2 -> 3
+    // Updating loop data if depart from station 3
+    if (station == 3)
+    {
+        if (started)
+        {
+            // Update sampst variable
+            sampst((sim_time - start_time_loop), SAMPST_LOOP);
+            // Update start_time_loop
+            start_time_loop = sim_time;
+            sampst(sim_time - start_time_location[station - 1], SAMPST_STOPTIME_3);
+        }
+        else
+        {
+            started = 1;
+        }
+    }
+
+    // Update sampst variable
+    if (station == 1)
+    {
+        sampst(sim_time - start_time_location[station - 1], SAMPST_STOPTIME_1);
+    }
+    else if (station == 2)
+    {
+        sampst(sim_time - start_time_location[station - 1], SAMPST_STOPTIME_2);
+    }
+
+    // Update new_stop to true
+    new_stop[station - 1] = 1;
+
     printf("[%.1f] [DEPARTURE] Bus departing from station %d to station %d, bus occupancy: %d \n", sim_time, station, station % 3 + 1, get_bus_size());
     fprintf(logfile, "[%.1f] [DEPARTURE] Bus departing from station %d to station %d, bus occupancy: %d \n", sim_time, station, station % 3 + 1, get_bus_size());
     switch (station)
@@ -231,6 +265,12 @@ void bus_arrival(int station)
     int event_unload = EVENT_UNLOADING_1 + (station - 1);
     int event_loading = EVENT_LOADING_1 + (station - 1);
 
+    if (new_stop[station - 1])
+    {
+        start_time_location[station - 1] = sim_time;
+        new_stop[station - 1] = 0;
+    }
+
     if (list_size[customer_destination_queue] != 0)
     {
         event_schedule(sim_time + uniform(MIN_OFFBOARD, MAX_OFFBOARD, STREAM_UNLOADING), event_unload);
@@ -238,7 +278,6 @@ void bus_arrival(int station)
     else
     {
         // Update sampst variable
-        sampst(get_bus_size(), SAMPST_PEOPLE_BUS);
 
         printf("[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
         fprintf(logfile, "[%.1f] Bus finished offloading, current occupancy: %d\n", sim_time, get_bus_size());
@@ -424,18 +463,36 @@ int main()
     fclose(logfile);
     fclose(outfile);
     sampst(0, -SAMPST_PEOPLE_1);
-    printf("mean number queue 1: %f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 1: %f\n", transfer[SAMPST_MAXIMUM]);
+    printf("mean number queue 1: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
     sampst(0, -SAMPST_PEOPLE_2);
-    printf("mean number queue 2: %f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 2: %f\n", transfer[SAMPST_MAXIMUM]);
+    printf("mean number queue 2: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
     sampst(0, -SAMPST_PEOPLE_3);
-    printf("mean number queue 3: %f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 3: %f\n", transfer[SAMPST_MAXIMUM]);
+    printf("mean number queue 3: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number queue 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
     printf("=============\n");
     sampst(0, -SAMPST_PEOPLE_BUS);
-    printf("mean number on the bus: %f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number on the bus: %f\n", transfer[SAMPST_MAXIMUM]);
+    printf("mean number on the bus: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum number on the bus: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    printf("=============\n");
+    sampst(0, -SAMPST_STOPTIME_1);
+    printf("mean bus stoptime at location 1: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum bus stoptime at location 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    printf("minimum bus stoptime at location 1: %.2f\n", transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_STOPTIME_2);
+    printf("mean bus stoptime at location 2: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum bus stoptime at location 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    printf("minimum bus stoptime at location 2: %.2f\n", transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_STOPTIME_3);
+    printf("mean bus stoptime at location 3: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum bus stoptime at location 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    printf("minimum bus stoptime at location 3: %.2f\n", transfer[SAMPST_MINIMUM]);
+    printf("=============\n");
+    sampst(0, -SAMPST_LOOP);
+    printf("mean bus loop time: %.2f\n", transfer[SAMPST_AVERAGE]);
+    printf("maximum bus loop time: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    printf("minimum bus loop time: %.2f\n", transfer[SAMPST_MINIMUM]);
 
     return 0;
 }
