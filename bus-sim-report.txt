@@ -1,0 +1,48 @@
+
+
+
+
+Report for 1.0 hour simulation
+
+
+
+
+
+Statistics 1: Average and maximum number in each queue
+
+
+
+
+
+Statistics 2: Average and maximum delay in each queue
+
+
+
+
+
+Statistics 3: Average and maximum number on the bus
+
+
+
+
+
+Statistics 4: Average, maximum, and minimum time the bus is stopped at each location
+
+
+
+
+
+Statistics 5: Average, maximum, and minimum time for the bus to make a loop
+
+
+
+
+
+Statistics 6: Average, maximum, and minimum time a person is in the system by arrival location
+
+
+
+
+
+End of report
+
