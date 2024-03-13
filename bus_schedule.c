@@ -112,7 +112,7 @@ const double BUS_STAY = 5;            // 5 minutes
 int waiting_duration = 0;
 double start_time_loop = 0;
 double start_time_location[3] = {0, 0, 0};
-double arrival_time_location[3][MAX_QUEUE]; 
+double arrival_time_location[3][MAX_QUEUE];
 char started = 0;
 char new_stop[3] = {1, 1, 1};
 
@@ -126,29 +126,32 @@ void load(int);
 void depart(int);
 int get_bus_size();
 int get_destination(int);
-void calculate_person_time_in_system(int, double);
+// void calculate_person_time_in_system(int, double);
 
 int get_bus_size()
 {
     return list_size[LIST_QUEUE_BUS_ARRIVE_1] + list_size[LIST_QUEUE_BUS_ARRIVE_2] + list_size[LIST_QUEUE_BUS_ARRIVE_3];
 }
 
-void calculate_person_time_in_system(int location, double arrival_time) {
-    double person_time = sim_time - arrival_time;
-    sampst(person_time, SAMPST_PERSON_1 + (location - 1));
-}
+// void calculate_person_time_in_system(int location, double arrival_time)
+// {
+//     double person_time = sim_time - arrival_time;
+//     sampst(person_time, SAMPST_PERSON_1 + (location - 1));
+//     printf("Person time in system: %f Station: %d\n", person_time, location);
+// }
 
 void depart(int station)
 {
     // 3 -> 1 -> 2 -> 3
     // Updating loop data if depart from station 3
     double arrival_time = arrival_time_location[station - 1][1];
-    calculate_person_time_in_system(station, arrival_time);
+    // calculate_person_time_in_system(station, arrival_time);
     if (station == 3)
     {
         if (started)
         {
             // Update sampst variable
+            printf("start time %f", sim_time - start_time_loop);
             sampst((sim_time - start_time_loop), SAMPST_LOOP);
             // Update start_time_loop
             start_time_loop = sim_time;
@@ -195,13 +198,13 @@ void load(int station)
     int event_load = EVENT_LOADING_1 + (station - 1);
     double arrival_time = arrival_time_location[station - 1][1];
 
-    calculate_person_time_in_system(station, arrival_time);
+    // calculate_person_time_in_system(station, arrival_time);
 
     // if current station queue not empty, add to bus
     if (list_size[current_station_queue] != 0 && get_bus_size() < MAX_CAPACITY)
     {
         list_remove(FIRST, current_station_queue);
-        
+
         // Get the timing and destination of current person
         double person_arrival_time = transfer[1];
         int person_destination = transfer[2];
@@ -257,8 +260,8 @@ void unload(int station)
     int event_unload = EVENT_UNLOADING_1 + (station - 1);
     double arrival_time = arrival_time_location[station - 1][1];
 
-    calculate_person_time_in_system(station, arrival_time);
-    // Pop the first from queue
+    // calculate_person_time_in_system(station, arrival_time);
+    // // Pop the first from queue
     // List must be > 0
     if (list_size[customer_destination_queue] == 0)
     {
@@ -269,6 +272,12 @@ void unload(int station)
     else
     {
         list_remove(FIRST, customer_destination_queue);
+        // transfer[1] = waktu orgnya naik
+        // transfer [2] destination
+        // transfer[3] arrival station
+        double time_now = sim_time - transfer[1];
+        sampst(time_now, SAMPST_PERSON_1 + (transfer[3] - 1));
+
         printf("[%.1f] [OFFLOAD]   Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
         fprintf(logfile, "[%.1f] [OFFLOAD] Bus offload person at station {%d}, current occupancy: %d\n", sim_time, station, get_bus_size());
         // Queue next person to remove
@@ -317,6 +326,7 @@ void sched_arrival(int station)
     arrival_time_location[station - 1][list_size[LIST_QUEUE_1 + (station - 1)]] = sim_time;
     transfer[1] = sim_time;
     transfer[2] = get_destination(station);
+    transfer[3] = station;
 
     switch (station)
     {
@@ -403,20 +413,24 @@ void report()
     fprintf(outfile, "\n\n\n\nEnd of report\n\n");
 }
 
-void print_stat_3(char* title, double average, double maximum) {
+void print_stat_3(char *title, double average, double maximum)
+{
     printf("%-17s%-17.3f%-17.3f\n", title, average, maximum);
 }
 
-void print_stat_4(char* title, double average, double maximum, double minimum) {
+void print_stat_4(char *title, double average, double maximum, double minimum)
+{
     printf("%-17s%-17.3f%-17.3f%-17.3f\n", title, average, maximum, minimum);
 }
 
-void print_stat_no_title_2(double average, double maximum) {
+void print_stat_no_title_2(double average, double maximum)
+{
     printf("%-17.3f%-17.3f\n", average, maximum);
 }
 
-void print_stat_no_title_3(double average, double maximum, double minimum) {
-    printf("%-17.3f%-17.3f%-17.3f\n", average, maximum);
+void print_stat_no_title_3(double average, double maximum, double minimum)
+{
+    printf("%-17.3f%-17.3f%-17.3f\n", average, maximum, minimum);
 }
 
 // Main simulator
@@ -428,6 +442,7 @@ int main()
     // Get the simulation duration
     printf("Input the simulation duration (in hour): ");
     scanf("%lf", &MAX_TIME);
+    
     MAX_TIME *= 60.0;
 
     init_simlib();
@@ -503,66 +518,66 @@ int main()
     /* QUESTION A */
     printf("\na. Average and maximum number in each queue\n");
     printf("%-17s%-17s%-17s\n", "Location", "Average number", "Maximum number");
-    
+
     sampst(0, -SAMPST_PEOPLE_1);
     print_stat_3("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
-    
+
     sampst(0, -SAMPST_PEOPLE_2);
     print_stat_3("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
-    
+
     sampst(0, -SAMPST_PEOPLE_3);
     print_stat_3("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
 
     /* QUESTION B */
     printf("\nb. Average and maximum delay in each queue\n");
     printf("%-17s%-17s%-17s\n", "Location", "Average delay", "Maximum delay");
-    
+
     sampst(0, -SAMPST_DELAYS_1);
     print_stat_3("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
-    
+
     sampst(0, -SAMPST_DELAYS_2);
     print_stat_3("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
-    
+
     sampst(0, -SAMPST_DELAYS_3);
     print_stat_3("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
 
     /* QUESTION C */
     printf("\nc. Average and maximum number on the bus\n");
     printf("%-17s%-17s\n", "Average number", "Maximum number");
-    
+
     sampst(0, -SAMPST_PEOPLE_BUS);
     print_stat_no_title_2(transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
 
     /* QUESTION D */
     printf("\nd. Average, maximum, and minimum time the bus stopped in each location\n");
     printf("%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
-    
+
     sampst(0, -SAMPST_STOPTIME_1);
     print_stat_4("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
-    
+
     sampst(0, -SAMPST_STOPTIME_2);
     print_stat_4("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
-    
+
     sampst(0, -SAMPST_STOPTIME_3);
     print_stat_4("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
-    
+
     /* QUESTION E */
     printf("\ne. Average, maximum, and minimum the bus to make a loop\n");
     printf("%-17s%-17s%-17s\n", "Average time", "Maximum time", "Minimum time");
-    
+
     sampst(0, -SAMPST_LOOP);
     print_stat_no_title_3(transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
 
     /* QUESTION F */
     printf("\nf. Average, maximum, and minimum time person is in the system\n");
     printf("%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
-    
+
     sampst(0, -SAMPST_PERSON_1);
     print_stat_4("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
-    
+
     sampst(0, -SAMPST_PERSON_2);
     print_stat_4("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
-    
+
     sampst(0, -SAMPST_PERSON_3);
     print_stat_4("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
 
