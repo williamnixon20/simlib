@@ -403,6 +403,22 @@ void report()
     fprintf(outfile, "\n\n\n\nEnd of report\n\n");
 }
 
+void print_stat_3(char* title, double average, double maximum) {
+    printf("%-17s%-17.3f%-17.3f\n", title, average, maximum);
+}
+
+void print_stat_4(char* title, double average, double maximum, double minimum) {
+    printf("%-17s%-17.3f%-17.3f%-17.3f\n", title, average, maximum, minimum);
+}
+
+void print_stat_no_title_2(double average, double maximum) {
+    printf("%-17.3f%-17.3f\n", average, maximum);
+}
+
+void print_stat_no_title_3(double average, double maximum, double minimum) {
+    printf("%-17.3f%-17.3f%-17.3f\n", average, maximum);
+}
+
 // Main simulator
 int main()
 {
@@ -483,66 +499,72 @@ int main()
     report();
     fclose(logfile);
     fclose(outfile);
+
     /* QUESTION A */
+    printf("\na. Average and maximum number in each queue\n");
+    printf("%-17s%-17s%-17s\n", "Location", "Average number", "Maximum number");
+    
     sampst(0, -SAMPST_PEOPLE_1);
-    printf("mean number queue 1: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    print_stat_3("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    
     sampst(0, -SAMPST_PEOPLE_2);
-    printf("mean number queue 2: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    print_stat_3("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    
     sampst(0, -SAMPST_PEOPLE_3);
-    printf("mean number queue 3: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number queue 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("=============\n");
+    print_stat_3("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+
     /* QUESTION B */
+    printf("\nb. Average and maximum delay in each queue\n");
+    printf("%-17s%-17s%-17s\n", "Location", "Average delay", "Maximum delay");
+    
     sampst(0, -SAMPST_DELAYS_1);
-    printf("mean delay queue 1: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum delay queue 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    print_stat_3("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    
     sampst(0, -SAMPST_DELAYS_2);
-    printf("mean delay queue 2: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum delay queue 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
+    print_stat_3("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    
     sampst(0, -SAMPST_DELAYS_3);
-    printf("mean delay queue 3: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum delay queue 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("=============\n");
+    print_stat_3("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+
     /* QUESTION C */
+    printf("\nc. Average and maximum number on the bus\n");
+    printf("%-17s%-17s\n", "Average number", "Maximum number");
+    
     sampst(0, -SAMPST_PEOPLE_BUS);
-    printf("mean number on the bus: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum number on the bus: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("=============\n");
+    print_stat_no_title_2(transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+
     /* QUESTION D */
+    printf("\nd. Average, maximum, and minimum time the bus stopped in each location\n");
+    printf("%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
+    
     sampst(0, -SAMPST_STOPTIME_1);
-    printf("mean bus stoptime at location 1: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum bus stoptime at location 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum bus stoptime at location 1: %.2f\n", transfer[SAMPST_MINIMUM]);
+    print_stat_4("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    
     sampst(0, -SAMPST_STOPTIME_2);
-    printf("mean bus stoptime at location 2: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum bus stoptime at location 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum bus stoptime at location 2: %.2f\n", transfer[SAMPST_MINIMUM]);
+    print_stat_4("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    
     sampst(0, -SAMPST_STOPTIME_3);
-    printf("mean bus stoptime at location 3: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum bus stoptime at location 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum bus stoptime at location 3: %.2f\n", transfer[SAMPST_MINIMUM]);
-    printf("=============\n");
+    print_stat_4("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    
     /* QUESTION E */
+    printf("\ne. Average, maximum, and minimum the bus to make a loop\n");
+    printf("%-17s%-17s%-17s\n", "Average time", "Maximum time", "Minimum time");
+    
     sampst(0, -SAMPST_LOOP);
-    printf("mean bus loop time: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum bus loop time: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum bus loop time: %.2f\n", transfer[SAMPST_MINIMUM]);
-    printf("=============\n");
+    print_stat_no_title_3(transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+
     /* QUESTION F */
+    printf("\nf. Average, maximum, and minimum time person is in the system\n");
+    printf("%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
+    
     sampst(0, -SAMPST_PERSON_1);
-    printf("mean person time in the system at location 1: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum person time in the system at location 1: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum person time in the system at location 1: %.2f\n", transfer[SAMPST_MINIMUM]);
+    print_stat_4("Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    
     sampst(0, -SAMPST_PERSON_2);
-    printf("mean person time in the system at location 2: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum person time in the system at location 2: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum person time in the system at location 2: %.2f\n", transfer[SAMPST_MINIMUM]);
+    print_stat_4("Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    
     sampst(0, -SAMPST_PERSON_3);
-    printf("mean person time in the system at location 3: %.2f\n", transfer[SAMPST_AVERAGE]);
-    printf("maximum person time in the system at location 3: %.2f\n", transfer[SAMPST_MAXIMUM]);
-    printf("minimum person time in the system at location 3: %.2f\n", transfer[SAMPST_MINIMUM]);
+    print_stat_4("Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
 
     return 0;
 }
