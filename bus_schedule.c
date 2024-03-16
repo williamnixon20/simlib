@@ -399,18 +399,59 @@ void report()
     // sampst(0, -3);
     // printf("\nNumber of person on station 3: %14.2lf \n", transfer[SAMPST_NUMBER]);
     // Number 1
-    fprintf(outfile, "\n\n\n\nStatistics 1: Average and maximum number in each queue\n\n");
-    // Number 2
-    fprintf(outfile, "\n\n\n\nStatistics 2: Average and maximum delay in each queue\n\n");
-    // Number 3
-    fprintf(outfile, "\n\n\n\nStatistics 3: Average and maximum number on the bus\n\n");
-    // Number 4
-    fprintf(outfile, "\n\n\n\nStatistics 4: Average, maximum, and minimum time the bus is stopped at each location\n\n");
-    // Number 5
-    fprintf(outfile, "\n\n\n\nStatistics 5: Average, maximum, and minimum time for the bus to make a loop\n\n");
-    // Number 6
-    fprintf(outfile, "\n\n\n\nStatistics 6: Average, maximum, and minimum time a person is in the system by arrival location\n\n");
-    fprintf(outfile, "\n\n\n\nEnd of report\n\n");
+    
+    /* Statistics 1: Average and maximum number in each queue */
+    fprintf(outfile, "a. Average and maximum number in each queue\n");
+    fprintf(outfile, "%-17s%-17s%-17s\n", "Location", "Average number", "Maximum number");
+    sampst(0, -SAMPST_PEOPLE_1);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_PEOPLE_2);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_PEOPLE_3);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    
+    /* Statistics 2: Average and maximum delay in each queue */
+    fprintf(outfile, "\nb. Average and maximum delay in each queue\n");
+    fprintf(outfile, "%-17s%-17s%-17s\n", "Location", "Average delay", "Maximum delay");
+    sampst(0, -SAMPST_DELAYS_1);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_DELAYS_2);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+    sampst(0, -SAMPST_DELAYS_3);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f\n", "Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+
+    /* Statistics 3: Average and maximum number on the bus */
+    fprintf(outfile, "\nc. Average and maximum number on the bus\n");
+    fprintf(outfile, "%-17s%-17s\n", "Average number", "Maximum number");
+    sampst(0, -SAMPST_PEOPLE_BUS);
+    fprintf(outfile, "%-17.3f%-17.3f\n", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM]);
+
+    /* Statistics 4: Average, maximum, and minimum time the bus is stopped at each location */
+    fprintf(outfile, "\nd. Average, maximum, and minimum time the bus is stopped at each location\n");
+    fprintf(outfile, "%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
+    sampst(0, -SAMPST_STOPTIME_1);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_STOPTIME_2);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_STOPTIME_3);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+
+    /* Statistics 5: Average, maximum, and minimum time for the bus to make a loop */
+    fprintf(outfile, "\ne. Average, maximum, and minimum time for the bus to make a loop\n");
+    fprintf(outfile, "%-17s%-17s%-17s\n", "Average time", "Maximum time", "Minimum time");
+    sampst(0, -SAMPST_LOOP);
+    fprintf(outfile, "%-17.3f%-17.3f%-17.3f\n", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+
+    /* Statistics 6: Average, maximum, and minimum time a person is in the system by arrival location */
+    fprintf(outfile, "\nf. Average, maximum, and minimum time a person is in the system by arrival location\n");
+    fprintf(outfile, "%-17s%-17s%-17s%-17s\n", "Location", "Average time", "Maximum time", "Minimum time");
+    sampst(0, -SAMPST_PERSON_1);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Terminal 1", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_PERSON_2);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Terminal 2", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    sampst(0, -SAMPST_PERSON_3);
+    fprintf(outfile, "%-17s%-17.3f%-17.3f%-17.3f\n", "Car rental", transfer[SAMPST_AVERAGE], transfer[SAMPST_MAXIMUM], transfer[SAMPST_MINIMUM]);
+    fprintf(outfile, "\nEnd of report\n");
 }
 
 void print_stat_3(char *title, double average, double maximum)

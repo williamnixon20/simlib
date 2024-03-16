@@ -1,44 +1,35 @@
 Report for 80.0 hour simulation
 
+a. Average and maximum number in each queue
+Location         Average number   Maximum number   
+Terminal 1       41.557           69.000           
+Terminal 2       15.913           41.000           
+Car rental       16.839           49.000           
 
+b. Average and maximum delay in each queue
+Location         Average delay    Maximum delay    
+Terminal 1       179.385          315.007          
+Terminal 2       90.388           227.734          
+Car rental       43.040           125.339          
 
+c. Average and maximum number on the bus
+Average number   Maximum number   
+19.537           20.000           
 
+d. Average, maximum, and minimum time the bus is stopped at each location
+Location         Average time     Maximum time     Minimum time     
+Terminal 1       8.086            15.776           4.976            
+Terminal 2       7.473            20.367           1.493            
+Car rental       15.000           29.154           10.304           
 
-Statistics 1: Average and maximum number in each queue
+e. Average, maximum, and minimum time for the bus to make a loop
+Average time     Maximum time     Minimum time     
+50.573           62.963           46.020           
 
-
-
-
-
-Statistics 2: Average and maximum delay in each queue
-
-
-
-
-
-Statistics 3: Average and maximum number on the bus
-
-
-
-
-
-Statistics 4: Average, maximum, and minimum time the bus is stopped at each location
-
-
-
-
-
-Statistics 5: Average, maximum, and minimum time for the bus to make a loop
-
-
-
-
-
-Statistics 6: Average, maximum, and minimum time a person is in the system by arrival location
-
-
-
-
+f. Average, maximum, and minimum time a person is in the system by arrival location
+Location         Average time     Maximum time     Minimum time     
+Terminal 1       201.891          339.411          21.946           
+Terminal 2       107.608          243.302          16.024           
+Car rental       63.029           153.225          13.437           
 
 End of report
-
